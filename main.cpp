@@ -2,9 +2,11 @@
 
 using namespace std;
 
-// The board needs to be 8
-const int SIZE = 8;
+// Game score, black is X and white is O
+int black, white;
 
+// Defining board
+const int SIZE = 8;
 char worldMap[SIZE][SIZE];
 
 void printWorldMap(){
@@ -22,7 +24,10 @@ void printWorldMap(){
   }
 
   cout << "  = = = = = = = = = = =" << endl;
-  cout << "     A B C D E F G H" << endl;
+  cout << "     A B C D E F G H" << endl << endl;
+
+  cout << "    X(" + to_string(black) + ")          ";
+  cout << "O(" + to_string(white) + ")" << endl;
 
 }
 
@@ -36,6 +41,7 @@ int main(){
 
   worldMap[SIZE/2 - 1][SIZE/2 - 1] = worldMap[SIZE/2][SIZE/2] = 'O';
   worldMap[SIZE/2 - 1][SIZE/2] = worldMap[SIZE/2][SIZE/2 - 1] = 'X';
+  black = white = 2;
 
   printWorldMap();
 
