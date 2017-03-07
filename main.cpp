@@ -44,7 +44,44 @@ void computeScore(){
           ++white;
 }
 
-void proccessInput(string& input){
+bool isValid(int row, int column, char player) {
+  // Avoid overwriting
+  if(worldMap[row][column] != '-')
+    return 0;
+
+  // Force move to be next to the enemy
+  bool next = 0;
+  char enemy = (player == 'X') ? 'O' : 'X';
+  if((row > 0 && row < SIZE) && (column > 0 && column < SIZE)) {
+    if(worldMap[row + 1][column] == enemy) next = 1;
+    else if(worldMap[row][column + 1] == enemy) next = 1;
+    else if(worldMap[row - 1][column] == enemy) next = 1;
+    else if(worldMap[row][column - 1] == enemy) next = 1;
+  } else {
+    if (row == 0){
+      if (worldMap[row + 1][column] == enemy) next = 1;
+    } else if (worldMap[row - 1][column] == enemy) next = 1;
+
+    if(column == 0){
+      if (worldMap[row][column + 1] == enemy) next = 1;
+    } else if (worldMap[row][column - 1] == enemy) next == 1;
+  }
+
+  if(!next) return 0;
+
+  return 1;
+}
+
+void convertEnemies(){
+
+}
+
+// Human turn
+void proccessInput(){
+  cout << "It's your turn: ";
+
+  string input;
+  getline(cin, input);
 
   int column = (int)input[0] - 97;
   // Become non case-sensitive
@@ -53,11 +90,21 @@ void proccessInput(string& input){
 
   int row = (int)(input[1]) - 49;
 
-  worldMap[row][column] = 'X';
+  if(isValid(row, column, 'X')){
 
-  computeScore();
+    worldMap[row][column] = 'X';
 
-  printWorldMap();
+    convertEnemies();
+
+    computeScore();
+
+    printWorldMap();
+
+  } else {
+    cout << "Invalid move, try again" << endl;
+
+    proccessInput();
+  }
 }
 
 int main(){
@@ -74,13 +121,7 @@ int main(){
 
   printWorldMap();
 
-  // First turn
-  cout << "It's your turn: ";
-
-  string input;
-  getline(cin, input);
-
-  proccessInput(input);
+  proccessInput();
 
   return 0;
 }
