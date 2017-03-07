@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string>
 
 using namespace std;
 
@@ -31,6 +32,34 @@ void printWorldMap(){
 
 }
 
+void computeScore(){
+
+  black = white = 0;
+
+  for(int i = 0; i < SIZE; i++)
+      for (int j = 0; j < SIZE; j++)
+        if(worldMap[i][j] == 'X')
+          ++black;
+        else if(worldMap[i][j] == 'O')
+          ++white;
+}
+
+void proccessInput(string& input){
+
+  int column = (int)input[0] - 97;
+  // Become non case-sensitive
+  if(column < 0)
+    column = (int)(input[0]) - 65;
+
+  int row = (int)(input[1]) - 49;
+
+  worldMap[row][column] = 'X';
+
+  computeScore();
+
+  printWorldMap();
+}
+
 int main(){
   cout << "Othello Game" << endl << endl;
 
@@ -44,6 +73,14 @@ int main(){
   black = white = 2;
 
   printWorldMap();
+
+  // First turn
+  cout << "It's your turn: ";
+
+  string input;
+  getline(cin, input);
+
+  proccessInput(input);
 
   return 0;
 }
