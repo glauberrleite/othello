@@ -1,10 +1,10 @@
 enum Direction {
-  NORTH,
-  SOUTH,
-  EAST,
-  WEST,
-  NORTH-EAST,
-  NORTH-WEST,
-  SOUTH-EAST,
-  SOUTH-WEST
+  N,
+  S,
+  E,
+  W,
+  NE,
+  NW,
+  SE,
+  SW
 };
