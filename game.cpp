@@ -13,6 +13,14 @@ Game::Game(){
     end = 0;
 }
 
+int Game::getBlackScore(){
+  return black;
+}
+
+int Game::getWhiteScore(){
+  return white;
+}
+
 void Game::computeScore(){
 
   black = white = 0;
@@ -121,7 +129,7 @@ void Game::humanTurn(){
 
   int row = (int)(input[1]) - 49;
 
-  Node * node = new Node(row, column, worldMap, 'X');
+  Node * node = new Node(worldMap, row, column, 'X');
 
   if(node->isValid()){
 
@@ -142,8 +150,28 @@ void Game::humanTurn(){
   }
 }
 
+Node * Game::minimax(Node * root){
+
+}
+
 void Game::computerTurn(){
-  // to implement
+  cout << "Computer's turn: ";
+
+  Node * movement = minimax(new Node(worldMap));
+
+  char** newWorld = convertEnemies(movement);
+
+  for(int i = 0; i < SIZE; i++)
+    for (int j = 0; j < SIZE; j++)
+      worldMap[i][j] = newWorld[i][j];
+
+  worldMap[movement->getRow()][movement->getColumn()] = 'O';
+
+  computeScore();
+
+  cout << static_cast<char>(movement->getColumn() + 65);
+  cout << to_string(movement->getRow() + 1);
+  cout << endl;
 }
 
 bool Game::isEnd(){

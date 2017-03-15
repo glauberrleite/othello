@@ -3,7 +3,7 @@
 
 class Node {
 public:
-  Node(int row, int column, char worldMap[][8], char player = 'O');
+  Node(char worldMap[][8], int row = 0, int column = 0, char player = 'O');
   char worldMap[8][8];
   char getPlayer();
   int getColumn();

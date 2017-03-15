@@ -1,6 +1,6 @@
 #include"node.h"
 
-Node::Node(int row, int column, char worldMap[][8], char player){
+Node::Node(char worldMap[][8], int row, int column, char player){
   this->row = row;
   this->column = column;
   this->player = player;
@@ -24,9 +24,9 @@ int Node::getColumn(){
 bool Node::existsAnchor(Direction direction){
   char enemy = (player == 'X') ? 'O' : 'X';
 
-  bool nextToEnemy = 0;
   switch(direction){
     case N: {
+      bool nextToEnemy = 0;
       for(int i = row - 1; i > -1; --i){
         if(nextToEnemy && worldMap[i][column] == player){
           return 1;
@@ -37,6 +37,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case S: {
+      bool nextToEnemy = 0;
       for(int i = row + 1; i < 8; ++i){
         if(nextToEnemy && worldMap[i][column] == player){
           return 1;
@@ -47,6 +48,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case E: {
+      bool nextToEnemy = 0;
       for(int j = column + 1; j < 8; ++j){
         if(nextToEnemy && worldMap[row][j] == player){
           return 1;
@@ -57,6 +59,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case W: {
+      bool nextToEnemy = 0;
       for(int j = column - 1; j > -1; --j){
         if(nextToEnemy && worldMap[row][j] == player){
           return 1;
@@ -67,6 +70,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NE: {
+      bool nextToEnemy = 0;
       for (int i = row - 1, j = column + 1; i > -1 && j < 8; --i, ++j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -77,6 +81,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NW: {
+      bool nextToEnemy = 0;
       for (int i = row - 1, j = column - 1; i > -1 && j > -1; --i, --j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -87,6 +92,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case SE: {
+      bool nextToEnemy = 0;
       for (int i = row + 1, j = column + 1; i < 8 && j < 8; ++i, ++j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -97,6 +103,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case SW: {
+      bool nextToEnemy = 0;
       for (int i = row + 1, j = column - 1; i < 8 && j > -1; ++i, --j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;

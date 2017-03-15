@@ -6,7 +6,7 @@ using namespace std;
 
 void printWorldMap(Game* game){
 
-  cout << "     A B C D E F G H" << endl;
+  cout << endl << "     A B C D E F G H" << endl;
   cout << "  = = = = = = = = = = =" << endl;
 
   for(int i = 0; i < 8; i++){
@@ -21,8 +21,8 @@ void printWorldMap(Game* game){
   cout << "  = = = = = = = = = = =" << endl;
   cout << "     A B C D E F G H" << endl << endl;
 
-  //cout << "    X(" + to_string(black) + ")          ";
-  //cout << "O(" + to_string(white) + ")" << endl;
+  cout << "    X(" + to_string(game->getBlackScore()) + ")          ";
+  cout << "O(" + to_string(game->getWhiteScore()) + ")" << endl << endl;
 
 }
 
@@ -32,7 +32,7 @@ void humanTurn(){
 }
 
 int main(){
-  cout << "Othello Game" << endl << endl;
+  cout << "Othello Game" << endl;
 
   Game * game = new Game();
 

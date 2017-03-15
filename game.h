@@ -14,7 +14,10 @@ public:
   static char** convertEnemies(Node * node);
   void humanTurn();
   void computerTurn();
+  int getBlackScore();
+  int getWhiteScore();
 private:
+  Node * minimax(Node * root);
   void computeScore();
   int black;
   int white;
