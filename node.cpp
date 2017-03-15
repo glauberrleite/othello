@@ -54,6 +54,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case S: {
       for (int i = row + 1; i < 8; ++i){
@@ -64,6 +65,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case E: {
       for (int j = column + 1; j < 8; ++j){
@@ -74,6 +76,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case W: {
       for (int j = column - 1; j >= 0; --j){
@@ -84,6 +87,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case NE: {
       for (int i = row - 1, j = column + 1; i >= 0 && j < 8; --i, ++j){
@@ -94,6 +98,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case NW: {
       for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; --i, --j){
@@ -104,6 +109,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case SE: {
       for (int i = row + 1, j = column + 1; i < 8 && j < 8; ++i, ++j){
@@ -114,6 +120,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
     case SW: {
       for (int i = row + 1, j = column - 1; i < 8 && j >= 0; ++i, --j){
@@ -124,6 +131,7 @@ bool Node::existsAnchor(Direction direction){
           continue;
         } else break;
       }
+      break;
     }
   }
 
