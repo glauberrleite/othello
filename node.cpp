@@ -24,75 +24,85 @@ int Node::getColumn(){
 
 bool Node::existsAnchor(Direction direction){
   char enemy = (player == 'X') ? 'O' : 'X';
+
+  bool nextToEnemy = 0;
   switch(direction){
     case N: {
-      for(int i = row - 1; i > 0; ++i){
-        if(worldMap[i][column] == player){
+      for(int i = row - 1; i > 0; --i){
+        if(nextToEnemy && worldMap[i][column] == player){
           return 1;
         } else if(worldMap[i][column] == enemy) {
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case S: {
       for(int i = row + 1; i < 8; ++i){
-        if(worldMap[i][column] == player){
+        if(nextToEnemy && worldMap[i][column] == player){
           return 1;
         } else if(worldMap[i][column] == enemy) {
-        continue;
+          nextToEnemy = 1;
+          continue;
         } else break;
       }
     }
     case E: {
       for(int j = column + 1; j < 8; ++j){
-        if(worldMap[row][j] == player){
+        if(nextToEnemy && worldMap[row][j] == player){
           return 1;
         } else if(worldMap[row][j] == enemy) {
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case W: {
-      for(int j = column - 1; j > 0; ++j){
-        if(worldMap[row][j] == player){
+      for(int j = column - 1; j > 0; --j){
+        if(nextToEnemy && worldMap[row][j] == player){
           return 1;
         } else if(worldMap[row][j] == enemy) {
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case NE: {
-      for (int i = row - 1, j = column + 1; i > 0 && j < 8; ++i, ++j){
-        if(worldMap[i][j] == player){
+      for (int i = row - 1, j = column + 1; i > 0 && j < 8; --i, ++j){
+        if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case NW: {
-      for (int i = row - 1, j = column - 1; i > 0 && j > 0; ++i, ++j){
-        if(worldMap[i][j] == player){
+      for (int i = row - 1, j = column - 1; i > 0 && j > 0; --i, --j){
+        if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case SE: {
       for (int i = row + 1, j = column + 1; i < 8 && j < 8; ++i, ++j){
-        if(worldMap[i][j] == player){
+        if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
+          nextToEnemy = 1;
           continue;
         } else break;
       }
     }
     case SW: {
-      for (int i = row + 1, j = column - 1; i < 8 && j > 0; ++i, ++j){
-        if(worldMap[i][j] == player){
+      for (int i = row + 1, j = column - 1; i < 8 && j > 0; ++i, --j){
+        if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
+          nextToEnemy = 1;
           continue;
         } else break;
       }
@@ -107,34 +117,15 @@ bool Node::isValid(){
     if(worldMap[row][column] != '-')
       return 0;
 
-    // Force move to be next to the enemy
-    bool next = 0;
-    char enemy = (player == 'X') ? 'O' : 'X';
-    if((row > 0 && row < 8) && (column > 0 && column < 8)) {
-      for(unsigned int i = 0; i < 8; ++i){
-        if(existsAnchor(static_cast<Direction>(i))){
-          next = 1;
-          break;
-        }
-      }
-      /*if(worldMap[row + 1][column] == enemy) next = 1;
-      else if(worldMap[row][column + 1] == enemy) next = 1;
-      else if(worldMap[row - 1][column] == enemy) next = 1;
-      else if(worldMap[row][column - 1] == enemy) next = 1;
-      */
-    } else {
-      if (row == 0){
-        if (worldMap[row + 1][column] == enemy) next = 1;
-      } else if (worldMap[row - 1][column] == enemy) next = 1;
 
-      if(column == 0){
-        if (worldMap[row][column + 1] == enemy) next = 1;
-      } else if (worldMap[row][column - 1] == enemy) next == 1;
+    // Force move to be next to the enemy
+    for(unsigned int i = 0; i < 8; ++i){
+      if(existsAnchor(static_cast<Direction>(i))){
+        return 1;
+      }
     }
 
-    if(!next) return 0;
-
-    return 1;
+    return 0;
 }
 
 std::vector<Node *> Node::buildSuccessors(){
