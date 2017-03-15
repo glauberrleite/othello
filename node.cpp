@@ -7,6 +7,8 @@ Node::Node(char worldMap[][8], char player, int row, int column){
   for(int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++)
         this->worldMap[i][j] = worldMap[i][j];
+
+  this->utility = 0;
 }
 
 char Node::getPlayer(){
@@ -21,12 +23,29 @@ int Node::getColumn(){
   return column;
 }
 
+int Node::getUtility(){
+  return utility;
+}
+
+char ** Node::getWorldMap(){
+  char ** newWorld = new char*[8];
+  for (int i = 0; i < 8; i++)
+    newWorld[i] = new char[8];
+
+  for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++){
+        newWorld[i][j] = worldMap[i][j];
+      }
+
+  return newWorld;
+}
+
 bool Node::existsAnchor(Direction direction){
   char enemy = (player == 'X') ? 'O' : 'X';
 
+  bool nextToEnemy = 0;
   switch(direction){
     case N: {
-      bool nextToEnemy = 0;
       for (int i = row - 1; i >= 0; --i){
         if (nextToEnemy && worldMap[i][column] == player){
           return 1;
@@ -37,7 +56,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case S: {
-      bool nextToEnemy = 0;
       for (int i = row + 1; i < 8; ++i){
         if (nextToEnemy && worldMap[i][column] == player){
           return 1;
@@ -48,7 +66,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case E: {
-      bool nextToEnemy = 0;
       for (int j = column + 1; j < 8; ++j){
         if (nextToEnemy && worldMap[row][j] == player){
           return 1;
@@ -59,7 +76,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case W: {
-      bool nextToEnemy = 0;
       for (int j = column - 1; j >= 0; --j){
         if (nextToEnemy && worldMap[row][j] == player){
           return 1;
@@ -70,7 +86,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NE: {
-      bool nextToEnemy = 0;
       for (int i = row - 1, j = column + 1; i >= 0 && j < 8; --i, ++j){
         if (nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -81,7 +96,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NW: {
-      bool nextToEnemy = 0;
       for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; --i, --j){
         if (nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -92,7 +106,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case SE: {
-      bool nextToEnemy = 0;
       for (int i = row + 1, j = column + 1; i < 8 && j < 8; ++i, ++j){
         if (nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -103,7 +116,6 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case SW: {
-      bool nextToEnemy = 0;
       for (int i = row + 1, j = column - 1; i < 8 && j >= 0; ++i, --j){
         if (nextToEnemy && worldMap[i][j] == player){
           return 1;
@@ -138,7 +150,7 @@ void Node::convertEnemies(){
   char enemy = (player == 'X') ? 'O' : 'X';
 
   if (existsAnchor(N)){
-    for (int i = row - 1; i > 0; ++i) {
+    for (int i = row - 1; i >= 0; ++i) {
       if (worldMap[i][column] == enemy)
         worldMap[i][column] = player;
       else break;
@@ -162,7 +174,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(W)){
-    for (int j = column - 1; j > 0; ++j) {
+    for (int j = column - 1; j >= 0; ++j) {
       if (worldMap[row][j] == enemy)
         worldMap[row][j] = player;
       else break;
@@ -178,7 +190,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(NE)){
-    for (int i = row - 1, j = column + 1; i > 0 && j < 8; ++i, ++j){
+    for (int i = row - 1, j = column + 1; i >= 0 && j < 8; ++i, ++j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
         else break;
@@ -186,7 +198,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(SW)){
-    for (int i = row + 1, j = column - 1; i < 8 && j > 0; ++i, ++j){
+    for (int i = row + 1, j = column - 1; i < 8 && j >= 0; ++i, ++j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
       else break;
@@ -194,7 +206,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(NW)){
-    for (int i = row - 1, j = column - 1; i > 0 && j > 0; ++i, ++j){
+    for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; ++i, ++j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
       else break;
@@ -212,8 +224,11 @@ char ** Node::makeMovement(){
     newWorld[i] = new char[8];
 
   for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++)
+      for (int j = 0; j < 8; j++){
         newWorld[i][j] = worldMap[i][j];
+        if (worldMap[i][j] == 'O')
+          ++utility;
+      }
 
   return newWorld;
 }
@@ -227,6 +242,7 @@ std::vector<Node *> Node::buildSuccessors(){
     for (int j = 0; j < 8; j++){
       Node * candidate = new Node(worldMap, enemy, i, j);
       if (candidate->isValid()){
+        candidate->makeMovement();
         successors.push_back(candidate);
       }
     }

@@ -33,6 +33,81 @@ void Game::computeScore(){
           ++white;
 }
 
+int Game::maxValue(Node * node, int depth){
+  vector<Node *> successors = node->buildSuccessors();
+
+  if(successors.empty() || depth == MINIMAX_DEPTH)
+    return node->getUtility();
+
+  int highest = 0;
+
+  depth++;
+
+  for (Node * successor : successors){
+    int value = minValue(successor, depth);
+
+    if(value > highest)
+      highest = value;
+  }
+
+  return highest;
+}
+
+int Game::minValue(Node * node, int depth){
+  vector<Node *> successors = node->buildSuccessors();
+
+  if(successors.empty() || depth == MINIMAX_DEPTH)
+    return node->getUtility();
+
+  int lowest = INT_MAX;
+
+  depth++;
+
+  for (Node * successor : successors){
+    int value = maxValue(successor, depth);
+
+    if(value < lowest)
+      lowest = value;
+  }
+
+  return lowest;
+}
+
+Node * Game::minimax(Node * node){
+
+  int depth = 1;
+
+  int value = maxValue(node, depth);
+
+  for (Node * successor : node->buildSuccessors())
+    if(successor->getUtility() == value)
+      return successor;
+
+}
+
+void Game::computerTurn(){
+  cout << "Computer's turn: ";
+
+  // Stating minimax algorithm
+  Node * movement = minimax(new Node(worldMap));
+
+  char** newWorld = movement->getWorldMap();
+
+  for(int i = 0; i < SIZE; i++)
+    for (int j = 0; j < SIZE; j++)
+      worldMap[i][j] = newWorld[i][j];
+
+  computeScore();
+
+  cout << static_cast<char>(movement->getColumn() + 65);
+  cout << to_string(movement->getRow() + 1);
+  cout << endl;
+
+  if (movement->buildSuccessors().empty())
+    end = 1;
+
+}
+
 void Game::humanTurn(){
   cout << "It's your turn: ";
 
@@ -58,37 +133,14 @@ void Game::humanTurn(){
 
     computeScore();
 
-    if(node->buildSuccessors().empty()){
+    if(node->buildSuccessors().empty())
       end = 1;
-    }
 
   } else {
     cout << "Invalid move, try again" << endl;
 
     humanTurn();
   }
-}
-
-Node * Game::minimax(Node * root){
-  return root;
-}
-
-void Game::computerTurn(){
-  cout << "Computer's turn: ";
-
-  Node * movement = minimax(new Node(worldMap, 'O'));
-
-  char** newWorld = movement->makeMovement();
-
-  for(int i = 0; i < SIZE; i++)
-    for (int j = 0; j < SIZE; j++)
-      worldMap[i][j] = newWorld[i][j];
-
-  computeScore();
-
-  cout << static_cast<char>(movement->getColumn() + 65);
-  cout << to_string(movement->getRow() + 1);
-  cout << endl;
 }
 
 bool Game::isEnd(){

@@ -1,5 +1,6 @@
 #include<vector>
 #include<iostream>
+#include<climits>
 #include"node.h"
 
 using namespace std;
@@ -7,6 +8,7 @@ using namespace std;
 class Game {
 public:
   // Defining board
+  static const int MINIMAX_DEPTH = 2;
   static const int SIZE = 8;
   char worldMap[SIZE][SIZE];
   Game();
@@ -16,7 +18,9 @@ public:
   int getBlackScore();
   int getWhiteScore();
 private:
-  Node * minimax(Node * root);
+  int maxValue(Node * node, int depth);
+  int minValue(Node * node, int depth);
+  Node * minimax(Node * node);
   void computeScore();
   int black;
   int white;
