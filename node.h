@@ -3,15 +3,17 @@
 
 class Node {
 public:
-  Node(char worldMap[][8], int row = 0, int column = 0, char player = 'O');
-  char worldMap[8][8];
+  Node(char worldMap[][8], char player = 'O', int row = 0, int column = 0);
   char getPlayer();
   int getColumn();
   int getRow();
   bool isValid();
   std::vector<Node *> buildSuccessors();
   bool existsAnchor(Direction direction);
+  char ** makeMovement();
 private:
+  void convertEnemies();
+  char worldMap[8][8];
   int minimax;
   char player;
   int row;

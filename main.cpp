@@ -9,7 +9,7 @@ void printWorldMap(Game* game){
   cout << endl << "     A B C D E F G H" << endl;
   cout << "  = = = = = = = = = = =" << endl;
 
-  for(int i = 0; i < 8; i++){
+  for (int i = 0; i < 8; i++){
     cout << to_string(i + 1) + " || ";
     for (int j = 0; j < 8; j++){
       cout << game->worldMap[i][j];
@@ -36,17 +36,21 @@ int main(){
 
   Game * game = new Game();
 
-  while(!game->isEnd()){
-    printWorldMap(game);
+  printWorldMap(game);
+
+  while (!game->isEnd()){
 
     game->humanTurn();
 
     printWorldMap(game);
 
-    if(!game->isEnd())
+    if (!game->isEnd()){
       game->computerTurn();
+
+      printWorldMap(game);
+    }
   }
 
-  cout << "Game Over";
+  cout << "Game Over" << endl;
   return 0;
 }

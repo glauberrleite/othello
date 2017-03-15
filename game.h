@@ -11,7 +11,6 @@ public:
   char worldMap[SIZE][SIZE];
   Game();
   bool isEnd();
-  static char** convertEnemies(Node * node);
   void humanTurn();
   void computerTurn();
   int getBlackScore();
