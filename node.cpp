@@ -158,7 +158,7 @@ void Node::convertEnemies(){
   char enemy = (player == 'X') ? 'O' : 'X';
 
   if (existsAnchor(N)){
-    for (int i = row - 1; i >= 0; ++i) {
+    for (int i = row - 1; i >= 0; --i) {
       if (worldMap[i][column] == enemy)
         worldMap[i][column] = player;
       else break;
@@ -182,7 +182,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(W)){
-    for (int j = column - 1; j >= 0; ++j) {
+    for (int j = column - 1; j >= 0; --j) {
       if (worldMap[row][j] == enemy)
         worldMap[row][j] = player;
       else break;
@@ -198,7 +198,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(NE)){
-    for (int i = row - 1, j = column + 1; i >= 0 && j < 8; ++i, ++j){
+    for (int i = row - 1, j = column + 1; i >= 0 && j < 8; --i, ++j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
         else break;
@@ -206,7 +206,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(SW)){
-    for (int i = row + 1, j = column - 1; i < 8 && j >= 0; ++i, ++j){
+    for (int i = row + 1, j = column - 1; i < 8 && j >= 0; ++i, --j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
       else break;
@@ -214,7 +214,7 @@ void Node::convertEnemies(){
   }
 
   if (existsAnchor(NW)){
-    for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; ++i, ++j){
+    for (int i = row - 1, j = column - 1; i >= 0 && j >= 0; --i, --j){
       if (worldMap[i][j] == enemy)
         worldMap[i][j] = player;
       else break;
