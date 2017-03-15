@@ -7,7 +7,6 @@ Node::Node(int row, int column, char worldMap[][8], char player){
   for(int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++)
         this->worldMap[i][j] = worldMap[i][j];
-  // calculate minimax
 }
 
 char Node::getPlayer(){
@@ -28,7 +27,7 @@ bool Node::existsAnchor(Direction direction){
   bool nextToEnemy = 0;
   switch(direction){
     case N: {
-      for(int i = row - 1; i > 0; --i){
+      for(int i = row - 1; i > -1; --i){
         if(nextToEnemy && worldMap[i][column] == player){
           return 1;
         } else if(worldMap[i][column] == enemy) {
@@ -58,7 +57,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case W: {
-      for(int j = column - 1; j > 0; --j){
+      for(int j = column - 1; j > -1; --j){
         if(nextToEnemy && worldMap[row][j] == player){
           return 1;
         } else if(worldMap[row][j] == enemy) {
@@ -68,7 +67,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NE: {
-      for (int i = row - 1, j = column + 1; i > 0 && j < 8; --i, ++j){
+      for (int i = row - 1, j = column + 1; i > -1 && j < 8; --i, ++j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
@@ -78,7 +77,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case NW: {
-      for (int i = row - 1, j = column - 1; i > 0 && j > 0; --i, --j){
+      for (int i = row - 1, j = column - 1; i > -1 && j > -1; --i, --j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
@@ -98,7 +97,7 @@ bool Node::existsAnchor(Direction direction){
       }
     }
     case SW: {
-      for (int i = row + 1, j = column - 1; i < 8 && j > 0; ++i, --j){
+      for (int i = row + 1, j = column - 1; i < 8 && j > -1; ++i, --j){
         if(nextToEnemy && worldMap[i][j] == player){
           return 1;
         } else if(worldMap[i][j] == enemy){
@@ -117,10 +116,10 @@ bool Node::isValid(){
     if(worldMap[row][column] != '-')
       return 0;
 
-
-    // Force move to be next to the enemy
+    // Check if the move is making an anchor
     for(unsigned int i = 0; i < 8; ++i){
       if(existsAnchor(static_cast<Direction>(i))){
+        // Node is valid
         return 1;
       }
     }
