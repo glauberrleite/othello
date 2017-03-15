@@ -23,71 +23,79 @@ int Node::getColumn(){
 }
 
 bool Node::existsAnchor(Direction direction){
-  Node * node = this;
+  char enemy = (player == 'X') ? 'O' : 'X';
   switch(direction){
     case N: {
-      for(int i = node->getRow() - 1; i > 0; ++i){
-        if(node->worldMap[i][node->getColumn()] == node->getPlayer()){
+      for(int i = row - 1; i > 0; ++i){
+        if(worldMap[i][column] == player){
           return 1;
-        }
+        } else if(worldMap[i][column] == enemy) {
+          continue;
+        } else break;
       }
-      break;
     }
     case S: {
-      for(int i = node->getRow() + 1; i < 8; ++i){
-        if(node->worldMap[i][node->getColumn()] == node->getPlayer()){
+      for(int i = row + 1; i < 8; ++i){
+        if(worldMap[i][column] == player){
           return 1;
-        }
+        } else if(worldMap[i][column] == enemy) {
+        continue;
+        } else break;
       }
-      break;
     }
     case E: {
-      for(int j = node->getColumn() + 1; j < 8; ++j){
-        if(node->worldMap[node->getRow()][j] == node->getPlayer()){
+      for(int j = column + 1; j < 8; ++j){
+        if(worldMap[row][j] == player){
           return 1;
-        }
+        } else if(worldMap[row][j] == enemy) {
+          continue;
+        } else break;
       }
-      break;
     }
     case W: {
-      for(int j = node->getColumn() - 1; j > 0; ++j){
-        if(node->worldMap[node->getRow()][j] == node->getPlayer()){
+      for(int j = column - 1; j > 0; ++j){
+        if(worldMap[row][j] == player){
           return 1;
-        }
+        } else if(worldMap[row][j] == enemy) {
+          continue;
+        } else break;
       }
-      break;
     }
     case NE: {
-      for (int i = node->getRow() - 1, j = node->getColumn() + 1; i > 0 && j < 8; ++i, ++j){
-        if(node->worldMap[i][j] == node->getPlayer()){
+      for (int i = row - 1, j = column + 1; i > 0 && j < 8; ++i, ++j){
+        if(worldMap[i][j] == player){
           return 1;
-        }
+        } else if(worldMap[i][j] == enemy){
+          continue;
+        } else break;
       }
-      break;
     }
     case NW: {
-      for (int i = node->getRow() - 1, j = node->getColumn() - 1; i > 0 && j > 0; ++i, ++j){
-        if(node->worldMap[i][j] == node->getPlayer()){
+      for (int i = row - 1, j = column - 1; i > 0 && j > 0; ++i, ++j){
+        if(worldMap[i][j] == player){
           return 1;
-        }
+        } else if(worldMap[i][j] == enemy){
+          continue;
+        } else break;
       }
-      break;
     }
     case SE: {
-      for (int i = node->getRow() + 1, j = node->getColumn() + 1; i < 8 && j < 8; ++i, ++j){
-        if(node->worldMap[i][j] == node->getPlayer()){
+      for (int i = row + 1, j = column + 1; i < 8 && j < 8; ++i, ++j){
+        if(worldMap[i][j] == player){
           return 1;
-        }
+        } else if(worldMap[i][j] == enemy){
+          continue;
+        } else break;
       }
-      break;
     }
     case SW: {
-      for (int i = node->getRow() + 1, j = node->getColumn() - 1; i < 8 && j > 0; ++i, ++j){
-        if(node->worldMap[i][j] == node->getPlayer()){
+      for (int i = row + 1, j = column - 1; i < 8 && j > 0; ++i, ++j){
+        if(worldMap[i][j] == player){
           return 1;
-        }
+        } else if(worldMap[i][j] == enemy){
+          continue;
+        } else break;
       }
-      break;
     }
   }
 
@@ -103,10 +111,17 @@ bool Node::isValid(){
     bool next = 0;
     char enemy = (player == 'X') ? 'O' : 'X';
     if((row > 0 && row < 8) && (column > 0 && column < 8)) {
-      if(worldMap[row + 1][column] == enemy) next = 1;
+      for(unsigned int i = 0; i < 8; ++i){
+        if(existsAnchor(static_cast<Direction>(i))){
+          next = 1;
+          break;
+        }
+      }
+      /*if(worldMap[row + 1][column] == enemy) next = 1;
       else if(worldMap[row][column + 1] == enemy) next = 1;
       else if(worldMap[row - 1][column] == enemy) next = 1;
       else if(worldMap[row][column - 1] == enemy) next = 1;
+      */
     } else {
       if (row == 0){
         if (worldMap[row + 1][column] == enemy) next = 1;
