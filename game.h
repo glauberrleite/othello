@@ -8,7 +8,7 @@ using namespace std;
 class Game {
 public:
   // Defining board
-  static const int MINIMAX_DEPTH = 1;
+  static const int MINIMAX_DEPTH = 4;
   static const int SIZE = 8;
   char worldMap[SIZE][SIZE];
   Game();
@@ -20,8 +20,8 @@ public:
   bool isPassed();
 private:
   bool pass;
-  int maxValue(Node * node, int depth);
-  int minValue(Node * node, int depth);
+  int maxValue(Node * node, int depth, int alpha, int beta);
+  int minValue(Node * node, int depth, int alpha, int beta);
   Node * minimax(Node * node);
   void computeScore();
   int black;

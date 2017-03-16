@@ -38,27 +38,32 @@ void Game::computeScore(){
           ++white;
 }
 
-int Game::maxValue(Node * node, int depth){
+int Game::maxValue(Node * node, int depth, int alpha, int beta){
   vector<Node *> successors = node->buildSuccessors();
 
   if(successors.empty() || depth == MINIMAX_DEPTH)
     return node->getUtility();
 
-  int highest = 0;
+  int highest = INT_MIN;
 
   depth++;
 
   for (Node * successor : successors){
-    int value = minValue(successor, depth);
+    int value = minValue(successor, depth, alpha, beta);
 
     if(value > highest)
       highest = value;
   }
 
+  if (highest >= beta)
+    return highest;
+
+  alpha = (alpha >= highest) ? alpha : highest;
+
   return highest;
 }
 
-int Game::minValue(Node * node, int depth){
+int Game::minValue(Node * node, int depth, int alpha, int beta){
   vector<Node *> successors = node->buildSuccessors();
 
   if(successors.empty() || depth == MINIMAX_DEPTH)
@@ -69,11 +74,16 @@ int Game::minValue(Node * node, int depth){
   depth++;
 
   for (Node * successor : successors){
-    int value = maxValue(successor, depth);
+    int value = maxValue(successor, depth, alpha, beta);
 
     if(value < lowest)
       lowest = value;
   }
+
+  if (lowest <= beta)
+    return lowest;
+
+  beta = (beta <= lowest) ? beta : lowest;
 
   return lowest;
 }
@@ -82,7 +92,7 @@ Node * Game::minimax(Node * node){
 
   int depth = 0;
 
-  int value = maxValue(node, depth);
+  int value = maxValue(node, depth, INT_MAX, INT_MIN);
 
   for (Node * successor : node->buildSuccessors())
     if(successor->getUtility() == value)
