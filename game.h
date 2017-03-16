@@ -8,7 +8,7 @@ using namespace std;
 class Game {
 public:
   // Defining board
-  static const int MINIMAX_DEPTH = 4;
+  static const int MINIMAX_DEPTH = 1;
   static const int SIZE = 8;
   char worldMap[SIZE][SIZE];
   Game();

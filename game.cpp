@@ -53,12 +53,12 @@ int Game::maxValue(Node * node, int depth, int alpha, int beta){
 
     if(value > highest)
       highest = value;
+
+    if (highest >= beta)
+      return highest;
+
+    alpha = (alpha >= highest) ? alpha : highest;
   }
-
-  if (highest >= beta)
-    return highest;
-
-  alpha = (alpha >= highest) ? alpha : highest;
 
   return highest;
 }
@@ -78,12 +78,12 @@ int Game::minValue(Node * node, int depth, int alpha, int beta){
 
     if(value < lowest)
       lowest = value;
+
+    if (lowest <= alpha)
+      return lowest;
+
+    beta = (beta <= lowest) ? beta : lowest;
   }
-
-  if (lowest <= beta)
-    return lowest;
-
-  beta = (beta <= lowest) ? beta : lowest;
 
   return lowest;
 }
@@ -92,7 +92,7 @@ Node * Game::minimax(Node * node){
 
   int depth = 0;
 
-  int value = maxValue(node, depth, INT_MAX, INT_MIN);
+  int value = maxValue(node, depth, INT_MIN, INT_MAX);
 
   for (Node * successor : node->buildSuccessors())
     if(successor->getUtility() == value)
