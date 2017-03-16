@@ -11,6 +11,7 @@ Game::Game(){
     black = white = 2;
 
     end = 0;
+    pass = 0;
 }
 
 int Game::getBlackScore(){
@@ -19,6 +20,10 @@ int Game::getBlackScore(){
 
 int Game::getWhiteScore(){
   return white;
+}
+
+bool Game::isPassed(){
+  return pass;
 }
 
 void Game::computeScore(){
@@ -75,7 +80,7 @@ int Game::minValue(Node * node, int depth){
 
 Node * Game::minimax(Node * node){
 
-  int depth = 1;
+  int depth = 0;
 
   int value = maxValue(node, depth);
 
@@ -86,60 +91,77 @@ Node * Game::minimax(Node * node){
 }
 
 void Game::computerTurn(){
-  cout << "Computer's turn: ";
+  if((new Node(worldMap, 'X'))->buildSuccessors().empty() == 0){
+    pass = 0;
+    cout << "Computer's turn: ";
 
-  // Stating minimax algorithm
-  Node * movement = minimax(new Node(worldMap));
+    // Stating minimax algorithm
+    Node * movement = minimax(new Node(worldMap));
 
-  char** newWorld = movement->getWorldMap();
+    char** newWorld = movement->getWorldMap();
 
-  for(int i = 0; i < SIZE; i++)
-    for (int j = 0; j < SIZE; j++)
-      worldMap[i][j] = newWorld[i][j];
-
-  computeScore();
-
-  cout << static_cast<char>(movement->getColumn() + 65);
-  cout << to_string(movement->getRow() + 1);
-  cout << endl;
-
-  if (movement->buildSuccessors().empty())
-    end = 1;
-
-}
-
-void Game::humanTurn(){
-  cout << "It's your turn: ";
-
-  string input;
-  getline(cin, input);
-
-  int column = (int)input[0] - 97;
-  // Become non case-sensitive
-  if(column < 0)
-    column = (int)(input[0]) - 65;
-
-  int row = (int)(input[1]) - 49;
-
-  Node * node = new Node(worldMap, 'X', row, column);
-
-  if(node->isValid()){
-
-    char** newWorld = node->makeMovement();
-
-    for (int i = 0; i < SIZE; i++)
+    for(int i = 0; i < SIZE; i++)
       for (int j = 0; j < SIZE; j++)
         worldMap[i][j] = newWorld[i][j];
 
     computeScore();
 
-    if(node->buildSuccessors().empty())
-      end = 1;
-
+    cout << static_cast<char>(movement->getColumn() + 65);
+    cout << to_string(movement->getRow() + 1);
+    cout << endl;
   } else {
-    cout << "Invalid move, try again" << endl;
+    if (pass == 1){
+      end = 1;
+    } else {
+      pass = 1;
+      cout << "Computer passed" << endl;
+    }
+  }
 
-    humanTurn();
+}
+
+void Game::humanTurn(){
+  if((new Node(worldMap, 'O'))->buildSuccessors().empty() == 0){
+    pass = 0;
+
+    cout << "It's your turn: ";
+
+    string input;
+    getline(cin, input);
+
+    int column = (int)input[0] - 97;
+    // Become non case-sensitive
+    if(column < 0)
+      column = (int)(input[0]) - 65;
+
+    int row = (int)(input[1]) - 49;
+
+    Node * node = new Node(worldMap, 'X', row, column);
+
+    if(node->isValid()){
+
+      char** newWorld = node->makeMovement();
+
+      for (int i = 0; i < SIZE; i++)
+        for (int j = 0; j < SIZE; j++)
+          worldMap[i][j] = newWorld[i][j];
+
+        computeScore();
+
+    } else {
+      cout << "Invalid move, try again" << endl;
+
+      humanTurn();
+    }
+  } else {
+    if (pass == 1) {
+      end = 1;
+    }
+    else {
+      pass = 1;
+
+      cout << "Human passed" << endl;
+    }
   }
 }
 

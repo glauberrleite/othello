@@ -42,14 +42,22 @@ int main(){
 
     game->humanTurn();
 
-    printWorldMap(game);
+    if (!game->isPassed())
+      printWorldMap(game);
 
     if (!game->isEnd()){
       game->computerTurn();
 
-      printWorldMap(game);
+      if (!game->isPassed())
+        printWorldMap(game);
     }
   }
+
+  if(game->getBlackScore() > game->getWhiteScore())
+    cout << "Human Wins!" << endl;
+  else if (game->getWhiteScore() > game->getBlackScore())
+    cout << "Computer Wins!" << endl;
+  else cout << "Draw game" << endl;
 
   cout << "Game Over" << endl;
   return 0;
