@@ -1,9 +1,14 @@
 #include"node.h"
 
-Node::Node(char worldMap[][8], char player, int row, int column){
+Node::Node(char ** worldMap, char player, int row, int column){
   this->row = row;
   this->column = column;
   this->player = player;
+
+  this->worldMap = new char*[8];
+  for (int i = 0; i < 8; i++)
+    this->worldMap[i] = new char[8];
+
   for(int i = 0; i < 8; i++)
       for (int j = 0; j < 8; j++)
         this->worldMap[i][j] = worldMap[i][j];
@@ -28,16 +33,7 @@ int Node::getUtility(){
 }
 
 char ** Node::getWorldMap(){
-  char ** newWorld = new char*[8];
-  for (int i = 0; i < 8; i++)
-    newWorld[i] = new char[8];
-
-  for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++){
-        newWorld[i][j] = worldMap[i][j];
-      }
-
-  return newWorld;
+    return worldMap;
 }
 
 bool Node::existsAnchor(Direction direction){
@@ -227,33 +223,28 @@ char ** Node::makeMovement(){
 
   convertEnemies();
 
-  char ** newWorld = new char*[8];
   for (int i = 0; i < 8; i++)
-    newWorld[i] = new char[8];
-
-  for (int i = 0; i < 8; i++)
-      for (int j = 0; j < 8; j++){
-        newWorld[i][j] = worldMap[i][j];
+      for (int j = 0; j < 8; j++)
         if (worldMap[i][j] == 'O')
           ++utility;
-      }
 
-  return newWorld;
+  return worldMap;
 }
 
 std::vector<Node *> Node::buildSuccessors(){
-  std::vector<Node *> successors;
+  if (successors.empty()){
 
-  char enemy = (player == 'X') ? 'O' : 'X';
+    char enemy = (player == 'X') ? 'O' : 'X';
 
-  for (int i = 0; i < 8; i++)
-    for (int j = 0; j < 8; j++){
-      Node * candidate = new Node(worldMap, enemy, i, j);
-      if (candidate->isValid()){
-        candidate->makeMovement();
-        successors.push_back(candidate);
+    for (int i = 0; i < 8; i++)
+      for (int j = 0; j < 8; j++){
+        Node * candidate = new Node(worldMap, enemy, i, j);
+        if (candidate->isValid()){
+          candidate->makeMovement();
+          successors.push_back(candidate);
+        }
       }
-    }
+  }
 
   return successors;
 }

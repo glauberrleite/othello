@@ -2,6 +2,10 @@
 
 Game::Game(){
   // Initializing worldMap
+  worldMap = new char*[SIZE];
+  for (int i = 0; i < SIZE; i++)
+    worldMap[i] = new char[SIZE];
+
   for (int i = 0; i < SIZE; i++)
     for (int j = 0; j < SIZE; j++)
       worldMap[i][j] = '-';
@@ -108,11 +112,7 @@ void Game::computerTurn(){
     // Stating minimax algorithm
     Node * movement = minimax(new Node(worldMap));
 
-    char** newWorld = movement->getWorldMap();
-
-    for(int i = 0; i < SIZE; i++)
-      for (int j = 0; j < SIZE; j++)
-        worldMap[i][j] = newWorld[i][j];
+    worldMap = movement->getWorldMap();
 
     computeScore();
 
@@ -150,13 +150,9 @@ void Game::humanTurn(){
 
     if(node->isValid()){
 
-      char** newWorld = node->makeMovement();
+      worldMap = node->makeMovement();
 
-      for (int i = 0; i < SIZE; i++)
-        for (int j = 0; j < SIZE; j++)
-          worldMap[i][j] = newWorld[i][j];
-
-        computeScore();
+      computeScore();
 
     } else {
       cout << "Invalid move, try again" << endl;

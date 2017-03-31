@@ -10,7 +10,7 @@ public:
   // Defining board
   static const int MINIMAX_DEPTH = 1;
   static const int SIZE = 8;
-  char worldMap[SIZE][SIZE];
+  char ** worldMap;
   Game();
   bool isEnd();
   void humanTurn();

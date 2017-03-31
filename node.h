@@ -3,7 +3,7 @@
 
 class Node {
 public:
-  Node(char worldMap[][8], char player = 'X', int row = 0, int column = 0);
+  Node(char ** worldMap, char player = 'X', int row = 0, int column = 0);
   char getPlayer();
   int getColumn();
   int getRow();
@@ -16,7 +16,8 @@ public:
   int getUtility();
 private:
   void convertEnemies();
-  char worldMap[8][8];
+  std::vector<Node *> successors;
+  char ** worldMap;
   int utility;
   char player;
   int row;

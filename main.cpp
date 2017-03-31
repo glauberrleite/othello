@@ -9,9 +9,9 @@ void printWorldMap(Game* game){
   cout << endl << "     A B C D E F G H" << endl;
   cout << "  = = = = = = = = = = =" << endl;
 
-  for (int i = 0; i < 8; i++){
+  for (int i = 0; i < Game::SIZE; i++){
     cout << to_string(i + 1) + " || ";
-    for (int j = 0; j < 8; j++){
+    for (int j = 0; j < Game::SIZE; j++){
       cout << game->worldMap[i][j];
       cout << " ";
     }
