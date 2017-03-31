@@ -1,2 +1,8 @@
 # othello
-A command-line othello (modern reversi) game
+A command-line othello (modern reversi) game. There are two players, black and white, and the goal is to end the game with more pieces in the board than the enemy. The game starts with two pieces for each players at the center of the grid in diagonal with each other. A player need to choose a valid place in the board to place a piece, where a valid place is the one which corner the enemy between itself and at least one player's disk previously present in the grid. The cornered enemy's disk are converted to the player disks, adding to its score and reducing the enemy's. The players switch turns and the game goes on until both player passes their turns because have no possibility to make valid movements. For more details about rules see [Wikipedia](https://en.wikipedia.org/wiki/Reversi#Rules).
+
+What is interesting in the game?
+* It's a command-line game. So you don't need any graphical server started or installed in your low-cost computer to play it.
+* It's singleplayer, you don't need no one at your side to play it. Enjoy the loneliness if you want, or be unfair and join forces with someone to beat the computer's AI. Maybe multiplayer will be there in the future.
+* It's free open source software, under GPL v3. You can have transparent access to the source and see that there's no spyware or any other malware inside of it. Aside, Artificial Intelligence students may be interested in see how a Minimax Algorithm with alpha-beta pruning works.
+* **[Technical]** Yeah, I'm using double pointer for the worldMap structure instead of simple array or vector. In my searches it is the fastest and lightest way to allocate the matrix.
