@@ -1,6 +1,9 @@
 #include"game.h"
 
-Game::Game(){
+Game::Game(int difficulty){
+
+  this->difficulty = difficulty;
+
   // Initializing worldMap
   worldMap = new char*[SIZE];
   for (int i = 0; i < SIZE; i++)
@@ -45,7 +48,7 @@ void Game::computeScore(){
 int Game::maxValue(Node * node, int depth, int alpha, int beta){
   vector<Node *> successors = node->buildSuccessors();
 
-  if(successors.empty() || depth == MINIMAX_DEPTH)
+  if(successors.empty() || depth == this->difficulty)
     return node->getUtility();
 
   int highest = INT_MIN;
@@ -70,7 +73,7 @@ int Game::maxValue(Node * node, int depth, int alpha, int beta){
 int Game::minValue(Node * node, int depth, int alpha, int beta){
   vector<Node *> successors = node->buildSuccessors();
 
-  if(successors.empty() || depth == MINIMAX_DEPTH)
+  if(successors.empty() || depth == this->difficulty)
     return node->getUtility();
 
   int lowest = INT_MAX;

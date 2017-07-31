@@ -26,15 +26,19 @@ void printWorldMap(Game* game){
 
 }
 
-// Human turn
-void humanTurn(){
-
-}
-
 int main(){
   cout << "Othello Game" << endl;
 
-  Game * game = new Game();
+  int difficulty = 0;
+  while (difficulty <= 0) {
+	 cout << "Difficulty (n > 0): ";
+	 cin >> difficulty;
+	 if (difficulty <= 0) 
+		 cout << "Invalid difficulty" << endl;
+  }
+  cin.ignore(); // avoid problems with getline
+
+  Game * game = new Game(difficulty);
 
   printWorldMap(game);
 
